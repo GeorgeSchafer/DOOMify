@@ -1,6 +1,0 @@
-[submodule "sh"]
-	path = sh
-	url = https://github.com/GeorgeSchafer/KwikGit.git
-[submodule "gimpfu"]
-	path = gimpfu
-	url = https://github.com/bootchk/GimpFu-v3.git
