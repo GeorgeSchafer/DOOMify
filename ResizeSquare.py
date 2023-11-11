@@ -20,21 +20,19 @@ def ResizeSquare(image, drawable):
     pdb.plug_in_unsharp_mask(image, drawable, unsharp_radius, unsharp_amount, unsharp_threshold)
 
     # Export to PNG
-    # file_path = pdb.gimp_image_get_filename(image)
-    # pdb.gimp_message("file_path saved")
+    source_path = "C:/Users/George/OneDrive/Workspace/doombuilder/00assets/1 TexturescomSource"
+    export_path = "C:/Users/George/OneDrive/Workspace/doombuilder/00assets/assets/textures/texturescom"
+    file_path = pdb.gimp_image_get_filename(image)
+    file_path = file_path[len(source_path):]
+    export_path += file_path
+    # export_path defined
+    
+    png_path = export_path[0:-3]
+    png_path += "png"
+    # png_path defined
 
-    # resized_path = "C:/Users/George/OneDrive/Workspace/doombuilder/00assets/1 TexturescomSource/Brick/Cinder Block/Clean/resized"
-    # pdb.gimp_message("resized_path saved")
-
-    # initial_path = os.path.commonprefix([file_path,resized_path])
-    # pdb.gimp_message("initial_path saved")
-
-    # filename = file_path[initial_path[-1],file_path[-1]]
-    # pdb.gimp_message("filename saved")
-
-    # pdb.gimp_message("Export PNG")
-    # pdb.file_png_save_defaults(image, drawable, resized_path + filename, resized_path + filename)
-    # pdb.gimp_message("PNG Exported")
+    pdb.file_png_save_defaults(image, drawable, png_path, png_path)
+    # png exported
 
 
 
