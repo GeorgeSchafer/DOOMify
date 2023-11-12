@@ -20,23 +20,35 @@ def ResizeSquare(image, drawable):
     pdb.plug_in_unsharp_mask(image, drawable, unsharp_radius, unsharp_amount, unsharp_threshold)
 
     # Export to PNG
-    source_path = "~/OneDrive/Workspace/doombuilder/00assets/1 TexturescomSource"
-    export_path = "~/OneDrive/Workspace/doombuilder/00assets/assets/textures/texturescom"
+    # Setup export
+    export_folder = "resized/"
+    export_path = ""
     file_path = pdb.gimp_image_get_filename(image)
+    file_path_list = file_path.split("\\")
+    pdb.gimp_message("setup complete")
+    pdb.gimp_message("file_path_list: " + file_path_list)
+
+
+    # Isolate and relabel desired filename
     
-    file_path = file_path[len(source_path):]
-    export_path += file_path
+    png = file_path_list.pop(file_path_list.count() - 1)
+    pdb.gimp_message("pop finished")
+    png = png[0:-3] + "png"
+    pdb.gimp_message("png concatenated")
+    pdb.gimp_message("png named: "+ png)
+
+    # build export_path
+    for x in file_path_list:
+        export_path += x + "/"
+    pdb.gimp_message("export_path started")
+    
     # export_path defined
-    
-    png_path = export_path[0:-3]
-    png_path += "png"
-    # png_path defined
-
-    pdb.file_png_save_defaults(image, drawable, png_path, png_path)
+    export_path += export_folder + png
+    pdb.gimp_message("export_path finished")
+     
+    pdb.file_png_save_defaults(image, drawable, export_path, export_path)
+    pdb.gimp_message("export finished")
     # png exported
-
-
-
 
     
 
