@@ -13,5 +13,6 @@ Simply copy the scripts into the GIMP plug-ins folder. Use the file paths below 
 ### GIMP 2.X
 
 ```text
+Windows:
 ~/AppData/Roaming/GIMP/2.10/plug-ins
 ```
