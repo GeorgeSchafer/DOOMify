@@ -21,29 +21,22 @@ def ResizeSquare(image, drawable):
 
     # Export to PNG
     # Setup export
-    export_folder = "resized/"
+    export_folder = "resized"
     export_path = ""
     file_path = pdb.gimp_image_get_filename(image)
-    file_path_list = file_path.split("\\")
+    file_path_list = file_path.split(os.path.sep)
+    file_path_list[0] += "\\\\"
     pdb.gimp_message("setup complete")
-    pdb.gimp_message("file_path_list: " + file_path_list)
-
 
     # Isolate and relabel desired filename
     
-    png = file_path_list.pop(file_path_list.count() - 1)
-    pdb.gimp_message("pop finished")
+    png = file_path_list.pop(len(file_path_list) - 1)
     png = png[0:-3] + "png"
-    pdb.gimp_message("png concatenated")
-    pdb.gimp_message("png named: "+ png)
 
     # build export_path
     for x in file_path_list:
-        export_path += x + "/"
-    pdb.gimp_message("export_path started")
-    
-    # export_path defined
-    export_path += export_folder + png
+        export_path = os.path.join(export_path, x)
+    export_path = os.path.join(export_path, export_folder, png)
     pdb.gimp_message("export_path finished")
      
     pdb.file_png_save_defaults(image, drawable, export_path, export_path)
