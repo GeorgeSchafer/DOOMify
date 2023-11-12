@@ -19,24 +19,29 @@ def ResizeSquare(image, drawable):
     # Appy Unsharp Mask to account for lost detail in ResizeSquare
     pdb.plug_in_unsharp_mask(image, drawable, unsharp_radius, unsharp_amount, unsharp_threshold)
 
+    toResized(image, drawable)
+
+def toResized(image, drawable):
     # Export to PNG
-    source_path = "~/OneDrive/Workspace/doombuilder/00assets/1 TexturescomSource"
-    export_path = "~/OneDrive/Workspace/doombuilder/00assets/assets/textures/texturescom"
+    # Setup export
+    export_folder = "resized"
+    export_path = ""
     file_path = pdb.gimp_image_get_filename(image)
-    
-    file_path = file_path[len(source_path):]
-    export_path += file_path
-    # export_path defined
-    
-    png_path = export_path[0:-3]
-    png_path += "png"
-    # png_path defined
+    file_path_list = file_path.split(os.path.sep)
+    if os.name == "nt":
+        file_path_list[0] += "\\\\"
 
-    pdb.file_png_save_defaults(image, drawable, png_path, png_path)
-    # png exported
+    # Isolate and relabel desired filename
+    png = file_path_list.pop(len(file_path_list) - 1)
+    png = png[0:-3] + "png"
 
+    # build export_path
+    for x in file_path_list:
+        export_path = os.path.join(export_path, x)
+    export_path = os.path.join(export_path, export_folder, png)
 
-
+    # png export to resized folder
+    pdb.file_png_save_defaults(image, drawable, export_path, export_path)
 
     
 
