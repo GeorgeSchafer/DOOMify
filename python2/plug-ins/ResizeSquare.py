@@ -24,7 +24,7 @@ def ResizeSquare(image, drawable):
     applyUnsharpMask(image, drawable, unsharp_radius, unsharp_amount, unsharp_threshold)
 
     # Apply Index Color Profile
-    dither_type = 2
+    dither_type = 0
     palette_type = 4
     num_cols = 256 # the number of colors to quantize to, ignored unless (palette_type == GIMP_CONVERT_PALETTE_GENERATE)
     alpha_dither = False
