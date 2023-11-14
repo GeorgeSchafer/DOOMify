@@ -8,10 +8,11 @@ Created a folder called "resized" (all lowercase) in the folder holding your ful
 
 ## Instructions
 
-Simply copy the scripts into the GIMP plug-ins folder. Use the file paths below as a guide.
+Simply copy (_not cut_) the folder of the version you are using into the GIMP user AppData folder. Use the file paths below as a guide.
 
 ### GIMP 2.X
 
 ```text
+Windows:
 ~/AppData/Roaming/GIMP/2.10/plug-ins
 ```

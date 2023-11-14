@@ -5,22 +5,50 @@ from gimpfu import *
 
 def ResizeRectangle(image, drawable):
     width = 256
-    length = 128
-    screen_resolution = 72
-    unsharp_radius = 0.32
-    unsharp_amount = 0.32
-    unsharp_threshold = 32
-
-    # Scale image to desired dimensions
-    pdb.gimp_image_scale(image, width, length)
+    height = 128
+    setDimensions(image, width, height)
 
     # Scale image to desired resolution
-    pdb.gimp_image_set_resolution(image, screen_resolution, screen_resolution)
+    screen_resolution = 72
+    setResolutions(image, screen_resolution)
 
-    # Appy Unsharp Mask to account for lost detail in Resize-Square
-    pdb.plug_in_unsharp_mask(image, drawable, unsharp_radius, unsharp_amount, unsharp_threshold)
+    # Apply Brightness-Contrast
+    brightness = -0.039
+    contrast = 0.01
+    applyContrast(drawable, brightness, contrast)
+
+    # Apply Unsharp Mask to account for lost detail in ResizeSquare
+    unsharp_radius = 3.0
+    unsharp_amount = 0.5
+    unsharp_threshold = 0.2
+    applyUnsharpMask(image, drawable, unsharp_radius, unsharp_amount, unsharp_threshold)
+
+    # Apply Index Color Profile
+    dither_type = 2
+    palette_type = 4
+    num_cols = 256 # the number of colors to quantize to, ignored unless (palette_type == GIMP_CONVERT_PALETTE_GENERATE)
+    alpha_dither = False
+    remove_unused = False
+    palette = "Doom"
+    applyColorIndex(image, dither_type, palette_type, num_cols, alpha_dither, remove_unused, palette)
 
     toResized(image, drawable)
+
+
+def setDimensions(image, length, width):
+    pdb.gimp_image_scale(image, length, width)
+
+def setResolutions(image, screen_resolution):
+    pdb.gimp_image_set_resolution(image, screen_resolution, screen_resolution)
+
+def applyContrast(drawable, brightness, contrast):
+    pdb.gimp_drawable_brightness_contrast(drawable, brightness, contrast)
+
+def applyUnsharpMask(image, drawable, unsharp_radius, unsharp_amount, unsharp_threshold):
+    pdb.plug_in_unsharp_mask(image, drawable, unsharp_radius, unsharp_amount, unsharp_threshold)
+
+def applyColorIndex(image, dither_type, palette_type, num_cols, alpha_dither, remove_unused, palette):
+    pdb.gimp_image_convert_indexed(image, dither_type, palette_type, num_cols, alpha_dither, remove_unused, palette)
 
 def toResized(image, drawable):
     # Export to PNG
@@ -45,7 +73,6 @@ def toResized(image, drawable):
     pdb.file_png_save_defaults(image, drawable, export_path, export_path)
 
 
-    
 
 register(
     "python-fu-ResizeRectangle",
