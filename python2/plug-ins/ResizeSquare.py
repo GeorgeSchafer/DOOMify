@@ -4,22 +4,50 @@ import os
 from gimpfu import *
 
 def ResizeSquare(image, drawable):
-    length = 128
-    screen_resolution = 72
-    unsharp_radius = 0.32
-    unsharp_amount = 0.32
-    unsharp_threshold = 32
-
     # Scale image to desired dimensions
-    pdb.gimp_image_scale(image, length, length)
+    length = width = 128
+    setDimensions(image, length, width)
 
     # Scale image to desired resolution
+    screen_resolution = 72
+    setResolutions(image, screen_resolution)
+
+    # Apply Brightness-Contrast
+    brightness = -0.039
+    contrast = 0.01
+    applyContrast(drawable, brightness, contrast)
+
+    # Apply Unsharp Mask to account for lost detail in ResizeSquare
+    unsharp_radius = 3.0
+    unsharp_amount = 0.5
+    unsharp_threshold = 0.2
+    applyUnsharpMask(image, drawable, unsharp_radius, unsharp_amount, unsharp_threshold)
+
+    # Apply Index Color Profile
+    dither_type = 2
+    palette_type = 4
+    alpha_dither = False
+    remove_unused = False
+    palette = "DOOM"
+    applyColorIndex(image, dither_type, palette_type, alpha_dither, remove_unused, palette)
+
+    # Export to PNG
+    toResized(image, drawable)
+
+def setDimensions(image, length, width):
+    pdb.gimp_image_scale(image, length, width)
+
+def setResolutions(image, screen_resolution):
     pdb.gimp_image_set_resolution(image, screen_resolution, screen_resolution)
 
-    # Appy Unsharp Mask to account for lost detail in ResizeSquare
+def applyContrast(drawable, brightness, contrast):
+    pdb.gimp_drawable_brightness_contrast(drawable, brightness, contrast)
+
+def applyUnsharpMask(image, drawable, unsharp_radius, unsharp_amount, unsharp_threshold):
     pdb.plug_in_unsharp_mask(image, drawable, unsharp_radius, unsharp_amount, unsharp_threshold)
 
-    toResized(image, drawable)
+def applyColorIndex(image, dither_type, palette_type, num_cols, alpha_dither, remove_unused, palette):
+    pdb.gimp_image_convert_indexed(image, dither_type, palette_type, num_cols, alpha_dither, remove_unused, palette)
 
 def toResized(image, drawable):
     # Export to PNG
