@@ -26,10 +26,11 @@ def ResizeSquare(image, drawable):
     # Apply Index Color Profile
     dither_type = 2
     palette_type = 4
+    num_cols = 256 # the number of colors to quantize to, ignored unless (palette_type == GIMP_CONVERT_PALETTE_GENERATE)
     alpha_dither = False
     remove_unused = False
-    palette = "DOOM"
-    applyColorIndex(image, dither_type, palette_type, alpha_dither, remove_unused, palette)
+    palette = "Doom"
+    applyColorIndex(image, dither_type, palette_type, num_cols, alpha_dither, remove_unused, palette)
 
     # Export to PNG
     toResized(image, drawable)
